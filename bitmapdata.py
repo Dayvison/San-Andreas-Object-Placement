@@ -53,7 +53,8 @@ def colour_at(x, y):
 	iGridX = (int(x)) + 3000
 	iGridY = ((int(y)) - 2999) * -1
 	#iDataPos = (iGridY * 6000) + iGridX
-	iDataPos = (iGridY * 1536) + iGridX
+	iDataPos = (iGridY * 6144) + iGridX
+	#iDataPos = (iGridY * 1536) + iGridX
 
 	try:
 		c = map_data[iDataPos]

@@ -7,14 +7,12 @@ import random
 
 # ss script utilities
 import region
-import mapandreas
 import bitmapdata
 import modelsizes
 
 TXWORKSPACE_PATH = "txmap/"
 MAPSDATA_PATH = "Maps/"
 
-HMAP_PATH = "SAfull.hmap"
 BMP_PATH = TXWORKSPACE_PATH + "gtasa-blank-vector.bmp"
 
 chance = {
@@ -25,6 +23,16 @@ chance = {
 	"desert" : 50,
 	"grassplanes" : 50
 }
+
+on = {
+	"water" : 0,
+	"roads" : 1,
+	"darkforest" : 1,
+	"lightforest" : 1,
+	"desert" : 1,
+	"grassplanes" : 1
+}
+
 objects_radius = [
 	(0.0, 40.0),
 	(5.0, 50.0),
@@ -33,28 +41,18 @@ objects_radius = [
 ]
 
 colors = {
-	"water" : (0, 0, 0),
+	"water" : (115, 138, 175),
 	"roads" : (0, 0, 0),
-	"darkforest" : (0, 0, 0),
-	"lightforest" : (0, 0, 0),
-	"desert" : (0, 0, 0),
-	"grassplanes" : (0, 0, 0)
+	"darkforest" : (54, 105, 46),
+	"lightforest" : (123, 138, 57),
+	"desert" : (156, 135, 115),
+	"grassplanes" : (115, 138, 57)
 }
-
-obj_arr_E_WATER = [1242, 1242]
-obj_arr_E_ROADS = [18862, 647, 692, 759, 760, 762, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 818, 819, 820, 821, 822, 823, 824, 825, 826, 827]
-obj_arr_E_DARKFOREST = [647, 692, 759, 760, 762, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 818, 819, 820, 821, 822, 823, 824, 825, 826, 827]
-obj_arr_LIGHTFOREST = [654, 655, 656, 657, 658, 659, 660, 661]
-obj_arr_DESERT = [647, 692, 759, 760, 762, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 818, 819, 820, 821, 822, 823, 824, 825, 826, 827]
-obj_arr_E_GRASSPLANES = [647, 692, 759, 760, 762, 800, 801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812, 813, 814, 815, 816, 818, 819, 820, 821, 822, 823, 824, 825, 826, 827]
-
-
 def gen_stuff():
 
 	print("Generating stuff...")
 
 	stuff = []
-	z = 0.0
 
 	for x in range (-3000, 3000):
 		for y in range (-3000, 3000):
@@ -64,42 +62,35 @@ def gen_stuff():
 			if c == None:
 				continue
 
-			# water			:
-			# roads			:
-			# darkforest	: 96
-			# lightforest	: 128
-			# desert		: 160
-			# grassplanes	: 192
-
 			if c == colors["water"]:
-				if random.randint(0, 100) < chance["water"]:
-					z = mapandreas.get_z(x, y) - 0.5
-					stuff.append(("water", x, y, z))
+				if on["water"] == 1:
+					if random.randint(0, 100) < chance["water"]:
+						stuff.append(("water", x, y))
 
 			elif c == colors["roads"]:
-				if random.randint(0, 100) < chance["roads"]:
-					z = mapandreas.get_z(x, y) - 0.5
-					stuff.append(("roads", x, y, z))
+				if on["roads"] == 1:
+					if random.randint(0, 100) < chance["roads"]:
+						stuff.append(("roads", x, y))
 
 			elif c == colors["darkforest"]:
-				if random.randint(0, 100) < chance["darkforest"]:
-					z = mapandreas.get_z(x, y) - 0.5
-					stuff.append(("darkforest", x, y, z))
+				if on["darkforest"] == 1:
+					if random.randint(0, 100) < chance["darkforest"]:
+						stuff.append(("darkforest", x, y))
 
 			elif c == colors["lightforest"]:
-				if random.randint(0, 100) < chance["lightforest"]:
-					z = mapandreas.get_z(x, y) - 0.5
-					stuff.append(("lightforest", x, y, z))
+				if on["lightforest"] == 1:
+					if random.randint(0, 100) < chance["lightforest"]:
+						stuff.append(("lightforest", x, y))
 
 			elif c == colors["desert"]:
-				if random.randint(0, 100) < chance["desert"]:
-					z = mapandreas.get_z(x, y) - 0.5
-					stuff.append(("desert", x, y, z))
+				if on["desert"] == 1:
+					if random.randint(0, 100) < chance["desert"]:
+						stuff.append(("desert", x, y))
 
 			elif c == colors["grassplanes"]:
-				if random.randint(0, 100) < chance["grassplanes"]:
-					z = mapandreas.get_z(x, y) - 0.5
-					stuff.append(("grassplanes", x, y, z))
+				if on["grassplanes"] == 1:
+					if random.randint(0, 100) < chance["grassplanes"]:
+						stuff.append(("grassplanes", x, y))
 
 			# ... fill in colour codes for species here
 
@@ -118,41 +109,26 @@ def save_stuff(stuff):
 		with io.open(MAPSDATA_PATH + "/" + files + ".foliage", "w") as f:
 			for i in stuff:
 				if region.is_point_in(i[1], i[2], name):
-					f.write(_CreateFoliage(i[0], x, y, z))
+					f.write(_CreateFoliage(i[0], x, y))
 					stuff.remove(i)
 					count += 1
 			print("Saved", count, "foliages for", name)
 
 	with io.open(MAPSDATA_PATH + "/other.foliage", "w") as f:
 		for i in stuff:
-				f.write(_CreateFoliage(i[0], x, y, z))
+				f.write(_CreateFoliage(i[0], x, y))
 				stuff.remove(i)
 				count += 1
 		print("Saved", count, "foliages for other")
 
-def _CreateFoliage(t, x, y, z):
-	model = 0
-
-	if t == "water":
-		model = random.choice(obj_arr_E_WATER)
-	elif t == "roads":
-		model = random.choice(obj_arr_E_ROADS)
-	elif t == "darkforest":
-		model = random.choice(obj_arr_E_DARKFOREST)
-	elif t == "lightforest":
-		model = random.choice(obj_arr_LIGHTFOREST)
-	elif t == "desert":
-		model = random.choice(obj_arr_DESERT)
-	elif t == "grassplanes":
-		model = random.choice(obj_arr_E_GRASSPLANES)
-
+def _CreateFoliage(t, x, y):
 	streamdistance = 0.0;
 
 	for radius in objects_radius:
 		if modelsizes.GetColSphereRadius(model) > radius[0]:
 			streamdistance = radius[1]
 
-	return ("CreateDynamicObject(%d, %f, %f, %f, 0.0, 0.0, 0.0, .streamdistance = %f);" % (model, x, y, z, streamdistance))
+	return ("%s %f %f %f\n" % (t, x, y, streamdistance))
 
 def draw_stuff(stuff):
 
@@ -180,10 +156,7 @@ def draw_stuff(stuff):
 
 	im.save("gtasa-foliage.jpg")
 
-
 def main():
-	
-	mapandreas.load_heightmap(HMAP_PATH)
 
 	bitmapdata.load_bitmap(BMP_PATH)
 
@@ -194,5 +167,8 @@ def main():
 	save_stuff(stuff)
 
 
+from time import time
+timeinit = int(time())
 if __name__ == '__main__':
 	main()
+	print("done with %d seconds" % (int(time()) - timeinit))

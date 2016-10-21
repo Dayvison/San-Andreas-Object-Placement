@@ -2,7 +2,7 @@
 from PIL import Image
 
 
-file = "txmap/gtasa-blank-vector"
+file = "txmap/radar_hd"
 
 inputfile = file + ".png"
 outputfile = file + ".bmp"
