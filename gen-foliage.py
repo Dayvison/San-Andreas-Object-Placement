@@ -54,12 +54,12 @@ def gen_stuff():
 
 	stuff = []
 	objects ={
-	"water" : (0, 0),
-	"roads" : (0, 0),
-	"darkforest" : (0, 0),
-	"lightforest" : (0, 0),
-	"desert" : (0, 0),
-	"grassplanes" : (0, 0)
+	"water" : [0, 0],
+	"roads" : [0, 0],
+	"darkforest" : [0, 0],
+	"lightforest" : [0, 0],
+	"desert" : [0, 0],
+	"grassplanes" : [0, 0]
 }
 	a = 0
 	b = 0
