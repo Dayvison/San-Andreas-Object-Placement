@@ -17,11 +17,11 @@ BMP_PATH = TXWORKSPACE_PATH + "radar_hd.bmp"
 
 chance = {
 	"water" : 1,
-	"roads" : 5,
-	"darkforest" : 15,
-	"lightforest" : 25,
-	"desert" : 25,
-	"grassplanes" : 25
+	"roads" : 3,
+	"darkforest" : 8,
+	"lightforest" : 15,
+	"desert" : 12,
+	"grassplanes" : 15
 }
 
 on = {
@@ -41,58 +41,88 @@ objects_radius = [
 ]
 
 colors = {
-	"water" : (115, 138, 175),
-	"roads" : (0, 0, 0),
-	"darkforest" : (54, 105, 46),
-	"lightforest" : (123, 138, 57),
-	"desert" : (156, 135, 115),
-	"grassplanes" : (115, 138, 57)
+	"water" : [(115, 138, 175)],
+	"roads" : [(0, 0, 0)],
+	"darkforest" : [(54, 105, 46), (57, 105, 41)],
+	"lightforest" : [(123, 138, 57)],
+	"desert" : [(156, 135, 115), (156, 132, 115)],
+	"grassplanes" : [(115, 138, 57)]
 }
 def gen_stuff():
 
 	print("Generating stuff...")
 
 	stuff = []
-
+	objects ={
+	"water" : (0, 0),
+	"roads" : (0, 0),
+	"darkforest" : (0, 0),
+	"lightforest" : (0, 0),
+	"desert" : (0, 0),
+	"grassplanes" : (0, 0)
+}
+	a = 0
+	b = 0
 	for x in range (-3000, 3000):
+		if a == 1:
+			a = 0
+			continue
+		a = 1
 		for y in range (-3000, 3000):
-
+			if b == 1:
+				b = 0
+				continue
+			b = 1
 			c = bitmapdata.colour_at(x, y)
 
 			if c == None:
 				continue
 
-			if c == colors["water"]:
+			if c in colors["water"]:
 				if on["water"] == 1:
+					objects["water"][1] += 1;
 					if random.randint(0, 100) < chance["water"]:
 						stuff.append(("water", x, y))
+						objects["water"][0] += 1;
 
-			elif c == colors["roads"]:
+			elif c in colors["roads"]:
 				if on["roads"] == 1:
+					objects["roads"][1] += 1;
 					if random.randint(0, 100) < chance["roads"]:
 						stuff.append(("roads", x, y))
+						objects["roads"][0] += 1;
 
-			elif c == colors["darkforest"]:
+			elif c in colors["darkforest"]:
 				if on["darkforest"] == 1:
+					objects["darkforest"][1] += 1;
 					if random.randint(0, 100) < chance["darkforest"]:
 						stuff.append(("darkforest", x, y))
+						objects["darkforest"][0] += 1;
 
-			elif c == colors["lightforest"]:
+			elif c in colors["lightforest"]:
 				if on["lightforest"] == 1:
+					objects["lightforest"][1] += 1;
 					if random.randint(0, 100) < chance["lightforest"]:
 						stuff.append(("lightforest", x, y))
+						objects["lightforest"][0] += 1;
 
-			elif c == colors["desert"]:
+			elif c in colors["desert"]:
 				if on["desert"] == 1:
+					objects["desert"][1] += 1;
 					if random.randint(0, 100) < chance["desert"]:
 						stuff.append(("desert", x, y))
+						objects["desert"][0] += 1;
 
-			elif c == colors["grassplanes"]:
+			elif c in colors["grassplanes"]:
 				if on["grassplanes"] == 1:
+					objects["grassplanes"][1] += 1;
 					if random.randint(0, 100) < chance["grassplanes"]:
 						stuff.append(("grassplanes", x, y))
+						objects["grassplanes"][0] += 1;
 
 			# ... fill in colour codes for species here
+
+	print(objects);
 
 	print("Stuff generated %d." % len(stuff))
 
