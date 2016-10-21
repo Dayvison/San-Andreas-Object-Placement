@@ -169,17 +169,17 @@ def draw_stuff(stuff):
 		c = (0, 0, 0)
 
 		if i[0] == "water":
-			c = colors["water"]
+			c = colors["water"][0]
 		elif i[0] == "roads":
-			c = colors["roads"]
+			c = colors["roads"][0]
 		elif i[0] == "darkforest":
-			c = colors["darkforest"]
+			c = colors["darkforest"][0]
 		elif i[0] == "lightforest":
-			c = colors["lightforest"]
+			c = colors["lightforest"][0]
 		elif i[0] == "desert":
-			c = colors["desert"]
+			c = colors["desert"][0]
 		elif i[0] == "grassplanes":
-			c = colors["grassplanes"]
+			c = colors["grassplanes"][0]
 
 		draw.ellipse([int(i[1] + 3000) - 8, int(6000 - (i[2] + 3000)) - 8, int(i[1] + 3000) + 8, int(6000 - (i[2] + 3000)) + 8], outline=(255, 255, 255), fill=c)
 		#draw.ellipse([int(i[1] + 1536) - 8, int(6000 - (i[2] + 1536)) - 8, int(i[1] + 1536) + 8, int(6000 - (i[2] + 1536)) + 8], outline=(255, 255, 255), fill=c)
