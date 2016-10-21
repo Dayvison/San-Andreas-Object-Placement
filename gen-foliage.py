@@ -13,15 +13,15 @@ import modelsizes
 TXWORKSPACE_PATH = "txmap/"
 MAPSDATA_PATH = "Maps/"
 
-BMP_PATH = TXWORKSPACE_PATH + "gtasa-blank-vector.bmp"
+BMP_PATH = TXWORKSPACE_PATH + "radar_hd.bmp"
 
 chance = {
 	"water" : 1,
 	"roads" : 5,
-	"darkforest" : 30,
-	"lightforest" : 50,
-	"desert" : 50,
-	"grassplanes" : 50
+	"darkforest" : 15,
+	"lightforest" : 25,
+	"desert" : 25,
+	"grassplanes" : 25
 }
 
 on = {
@@ -106,7 +106,7 @@ def save_stuff(stuff):
 
 	for name in files:
 		count = 0
-		with io.open(MAPSDATA_PATH + "/" + files + ".foliage", "w") as f:
+		with io.open(MAPSDATA_PATH + "/" + name + ".foliage", "w") as f:
 			for i in stuff:
 				if region.is_point_in(i[1], i[2], name):
 					f.write(_CreateFoliage(i[0], x, y))
@@ -157,13 +157,13 @@ def draw_stuff(stuff):
 	im.save("gtasa-foliage.jpg")
 
 def main():
-
+	print("load_bitmap 1/4")
 	bitmapdata.load_bitmap(BMP_PATH)
-
+	print("gen_stuff 2/4")
 	stuff = gen_stuff()
-
+	print("draw_stuff 3/4")
 	draw_stuff(stuff)
-
+	print("save_stuff 4/4")
 	save_stuff(stuff)
 
 
