@@ -17,11 +17,11 @@ BMP_PATH = TXWORKSPACE_PATH + "radar_hd.bmp"
 
 chance = {
 	"water" : 1,
-	"roads" : 3,
-	"darkforest" : 8,
-	"lightforest" : 15,
-	"desert" : 12,
-	"grassplanes" : 15
+	"roads" : 2,
+	"darkforest" : 2,
+	"lightforest" : 5,
+	"desert" : 3,
+	"grassplanes" : 5
 }
 
 on = {
@@ -32,13 +32,6 @@ on = {
 	"desert" : 1,
 	"grassplanes" : 1
 }
-
-objects_radius = [
-	(0.0, 40.0),
-	(5.0, 50.0),
-	(20.0, 100.0),
-	(50.0, 150.0)
-]
 
 colors = {
 	"water" : [(115, 138, 175)],
@@ -139,26 +132,20 @@ def save_stuff(stuff):
 		with io.open(MAPSDATA_PATH + "/" + name + ".foliage", "w") as f:
 			for i in stuff:
 				if region.is_point_in(i[1], i[2], name):
-					f.write(_CreateFoliage(i[0], x, y))
+					f.write(_CreateFoliage(i[0], i[1], i[2]))
 					stuff.remove(i)
 					count += 1
 			print("Saved", count, "foliages for", name)
 
 	with io.open(MAPSDATA_PATH + "/other.foliage", "w") as f:
 		for i in stuff:
-				f.write(_CreateFoliage(i[0], x, y))
+				f.write(_CreateFoliage(i[0], i[1], i[2]))
 				stuff.remove(i)
 				count += 1
 		print("Saved", count, "foliages for other")
 
 def _CreateFoliage(t, x, y):
-	streamdistance = 0.0;
-
-	for radius in objects_radius:
-		if modelsizes.GetColSphereRadius(model) > radius[0]:
-			streamdistance = radius[1]
-
-	return ("%s %f %f %f\n" % (t, x, y, streamdistance))
+	return ("%s %f %f\n" % (t, x, y))
 
 def draw_stuff(stuff):
 
@@ -181,8 +168,17 @@ def draw_stuff(stuff):
 		elif i[0] == "grassplanes":
 			c = colors["grassplanes"][0]
 
-		draw.ellipse([int(i[1] + 3000) - 8, int(6000 - (i[2] + 3000)) - 8, int(i[1] + 3000) + 8, int(6000 - (i[2] + 3000)) + 8], outline=(255, 255, 255), fill=c)
-		#draw.ellipse([int(i[1] + 1536) - 8, int(6000 - (i[2] + 1536)) - 8, int(i[1] + 1536) + 8, int(6000 - (i[2] + 1536)) + 8], outline=(255, 255, 255), fill=c)
+		#Todo: fix this maths
+
+		iGridX = (int(i[1])) + 3000
+		iGridY = ((int(i[2])) - 2999) * -1
+
+		draw.ellipse([
+			iGridX - 6,#		x0
+			iGridY - 6,#		y0
+			iGridX + 6,#		x1
+			iGridY + 6],#		y1
+			outline=(255, 255, 255), fill=c)
 
 	im.save("gtasa-foliage.jpg")
 
